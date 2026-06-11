@@ -107,3 +107,20 @@ We also rely on the following tools to manage the project:
 - [MkDocs](https://github.com/squidfunk/mkdocs-material)
 
 We're committed to continuing to build the Agents SDK as an open source framework so others in the community can expand on our approach.
+
+## Recuse Signal guardrail — adapted from "Will the Agent Recuse Itself? Measuring LLM-Agent Compliance with In-Band Access-Deny Signals"
+
+`examples/basic/recuse_signal.py` adds a cooperative access control for tool
+outputs. A server can publish an in-band **Recuse Signal** banner — the
+robots.txt analogue for live access — over an existing channel (e.g. a
+PostgreSQL `NOTICE` or SSH banner) asking an automated agent to voluntarily
+withdraw from a resource. `make_recuse_guardrail()` turns that signal into a
+[tool-output guardrail](https://openai.github.io/openai-agents-python/): when a
+tool's output carries the banner the agent recuses by default, while a trusted
+call-site `operator_authorization` flag — and only that flag, never the banner
+text itself — can override and proceed. It is wired into the
+`examples/basic/tool_guardrails.py` `query_ops_database` tool.
+
+Paper: https://arxiv.org/abs/2606.06460v1
+
+Contributed via [Remyx Recommendation](https://engine.remyx.ai).
