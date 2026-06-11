@@ -16,7 +16,10 @@ from agents import (
 try:
     from .recuse_signal import make_recuse_guardrail
 except ImportError:
-    from recuse_signal import make_recuse_guardrail
+    # Fallback so the example can also be run directly as a script
+    # (``python examples/basic/tool_guardrails.py``), where the package
+    # context that powers the relative import is not available.
+    from recuse_signal import make_recuse_guardrail  # type: ignore[no-redef,import-not-found]
 
 
 @function_tool
