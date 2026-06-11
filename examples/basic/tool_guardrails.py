@@ -13,7 +13,10 @@ from agents import (
     tool_output_guardrail,
 )
 
-from .recuse_signal import make_recuse_guardrail
+try:
+    from .recuse_signal import make_recuse_guardrail
+except ImportError:
+    from recuse_signal import make_recuse_guardrail
 
 
 @function_tool
