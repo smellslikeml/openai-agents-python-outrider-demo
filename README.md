@@ -107,3 +107,18 @@ We also rely on the following tools to manage the project:
 - [MkDocs](https://github.com/squidfunk/mkdocs-material)
 
 We're committed to continuing to build the Agents SDK as an open source framework so others in the community can expand on our approach.
+
+## Prompt-injection guardrail — adapted from "Formalizing and Benchmarking Prompt Injection Attacks and Defenses"
+
+`examples/agent_patterns/input_guardrails.py` now ships a second input guardrail,
+`prompt_injection_guardrail`, backed by `examples/agent_patterns/prompt_injection_detector.py`.
+The detector implements a lightweight, offline take on the attack taxonomy from
+[Formalizing and Benchmarking Prompt Injection Attacks and Defenses](https://arxiv.org/abs/2310.12815)
+(Liu et al.): it scans an input string for context-ignoring, fake-completion,
+escape-character, role-impersonation, and instruction-override components, and
+trips the guardrail when one or more is present (set `min_attack_types=2` to flag
+only the paper's stronger "combined attack"). Because it runs as pure pattern
+matching rather than the paper's LLM-based known-answer detection, it adds no
+extra model call and is cheap to run on every turn.
+
+Contributed via [Remyx Recommendation](https://engine.remyx.ai).
